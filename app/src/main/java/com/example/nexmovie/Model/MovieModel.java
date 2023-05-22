@@ -5,11 +5,15 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 public class MovieModel implements Parcelable {
+
+    private List<GenreModel> genres;
 
     private int id;
     private String title;
-    private String genres;
+
     private String overview;
     private String backdrop_path;
     private String budget;
@@ -24,7 +28,7 @@ public class MovieModel implements Parcelable {
     protected MovieModel(Parcel in) {
         id = in.readInt();
         title = in.readString();
-        genres = in.readString();
+
         overview = in.readString();
         backdrop_path = in.readString();
         budget = in.readString();
@@ -65,13 +69,26 @@ public class MovieModel implements Parcelable {
         this.title = title;
     }
 
-    public String getGenres() {
+//    public String getGenres() {
+//        return genres;
+//    }
+//
+//    public void setGenres(String genres) {
+//        this.genres = genres;
+//    }
+
+
+
+
+
+    public void setGenres(List<GenreModel> genres) {
+        this.genres = genres;
+    }
+
+    public List<GenreModel> getGenres() {
         return genres;
     }
 
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
 
     public String getOverview() {
         return overview;
@@ -164,7 +181,7 @@ public class MovieModel implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(title);
-        parcel.writeString(genres);
+
         parcel.writeString(overview);
         parcel.writeString(backdrop_path);
         parcel.writeString(budget);
