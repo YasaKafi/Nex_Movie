@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "458933570288",
+    "project_id": "nexmovie-6e9d3",
+    "storage_bucket": "nexmovie-6e9d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458933570288:android:8631c2acd57c50617a9035",
+        "android_client_info": {
+          "package_name": "com.example.nexmovie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458933570288-rc622f0ai41m1cedla85qojsnlathfio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nexmovie",
+            "certificate_hash": "d7c28925639713f603e9ec64b28ae8df181c4b95"
+          }
+        },
+        {
+          "client_id": "458933570288-v12bt0vn3o74qn4mmu2hkjompk2obds4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-mH0wWGXeEU8g1AR6d3JXbRf_IB4Ywew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458933570288-9rq6uftt1blfkmbtc3ua7avr4qg6qjr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
