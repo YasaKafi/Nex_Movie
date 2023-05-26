@@ -1,4 +1,4 @@
-package com.example.nexmovie;
+package com.example.nexmovie.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.nexmovie.MainActivity;
+import com.example.nexmovie.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +49,12 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_login_page);
+        ImageView imageView = findViewById(R.id.ilustration);
+        LinearLayout linearLayout = findViewById(R.id.linearLayoutLogin);
+
+        imageView.bringToFront();
+        linearLayout.requestLayout();
+
 
         username = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);
@@ -77,7 +87,7 @@ public class LoginPage extends AppCompatActivity {
                                             return;
                                         }else{
                                             Toast.makeText(LoginPage.this, message, Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(LoginPage.this,MainActivity.class);
+                                            Intent intent = new Intent(LoginPage.this, MainActivity.class);
                                             startActivity(intent);
                                         }
 

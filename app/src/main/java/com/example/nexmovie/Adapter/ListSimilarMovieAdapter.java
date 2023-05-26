@@ -16,6 +16,8 @@ import com.example.nexmovie.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class ListSimilarMovieAdapter extends RecyclerView.Adapter<ListSimilarMovieAdapter.MySimilar>{
 
     private Context context;
@@ -62,6 +64,13 @@ public class ListSimilarMovieAdapter extends RecyclerView.Adapter<ListSimilarMov
     public void onBindViewHolder(@NonNull ListSimilarMovieAdapter.MySimilar holder, int position) {
         final MovieModel movieModel = this.movieSimilarList.get(position);
         Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + movieModel.getPoster_path()).into(holder.ivPosterPathSimilar);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -73,5 +82,8 @@ public class ListSimilarMovieAdapter extends RecyclerView.Adapter<ListSimilarMov
 
 
         void onContactSelected(MovieModel mySimilar);
+
     }
 }
+
+

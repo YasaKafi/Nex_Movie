@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C1C1C"
+    android:background="#0c0c0c"
     tools:context=".MainActivity">
 
 
@@ -20,56 +20,34 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/profile"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/poppins_medium"
-                android:id="@+id/tvCast"
-                android:textColor="#4E4376"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextSizeCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="128dp"
                 android:fontFamily="@font/poppinssemi"
                 android:text="Temukan film favoritmu \ndan mulai streaming"
-                android:textColor="#4E4376"
+                android:textColor="#B3FFFFFF"
                 android:textSize="14dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNexMovie"
                 tools:ignore="TextSizeCheck" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewNexMovie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppinssemi"
                 android:text="Nex Movie"
-                android:textColor="#4E4376"
+                android:textColor="#4e4376"
                 android:textSize="35dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -77,55 +55,94 @@
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="24dp"
                 android:src="@drawable/n_ilustration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvpopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Popular"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout><![CDATA[
 
         />
 
+
+
         ]]>
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPopular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        <TextView
+            android:id="@+id/tvtoprated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="All Time Top Rated Movies"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/rvTopRated"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvPopular"
+            app:layout_constraintVertical_bias="1.0" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTopRated"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginLeft="13dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvPopular" />
+            app:layout_constraintTop_toBottomOf="@+id/tvtoprated" />
+
+        <TextView
+            android:id="@+id/tvNowPlaying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Now Playing"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/rvNowPlaying"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvTopRated"
+            app:layout_constraintVertical_bias="1.0" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNowPlaying"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="13dp"
+            android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvTopRated" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNowPlaying" />
 
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/rvCast"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="220dp"-->
-
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent" />-->
-
-        <!--        />-->
 
         <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
             android:id="@+id/tvproges"
@@ -134,10 +151,8 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.572"
             app:type="chrome_floating_circles" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
