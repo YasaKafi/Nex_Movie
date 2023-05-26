@@ -24,11 +24,11 @@ public class MovieModel implements Parcelable {
     private String status;
     private String name;
     private String profile_path;
+    private String language;
 
     protected MovieModel(Parcel in) {
         id = in.readInt();
         title = in.readString();
-
         overview = in.readString();
         backdrop_path = in.readString();
         budget = in.readString();
@@ -39,6 +39,7 @@ public class MovieModel implements Parcelable {
         status = in.readString();
         name = in.readString();
         profile_path = in.readString();
+        language = in.readString();
     }
 
     public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
@@ -68,18 +69,6 @@ public class MovieModel implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-
-//    public String getGenres() {
-//        return genres;
-//    }
-//
-//    public void setGenres(String genres) {
-//        this.genres = genres;
-//    }
-
-
-
-
 
     public void setGenres(List<GenreModel> genres) {
         this.genres = genres;
@@ -170,6 +159,14 @@ public class MovieModel implements Parcelable {
         this.profile_path = profile_path;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public MovieModel(){}
 
     @Override
@@ -181,7 +178,6 @@ public class MovieModel implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(title);
-
         parcel.writeString(overview);
         parcel.writeString(backdrop_path);
         parcel.writeString(budget);
@@ -192,5 +188,8 @@ public class MovieModel implements Parcelable {
         parcel.writeString(status);
         parcel.writeString(name);
         parcel.writeString(profile_path);
+        parcel.writeString(language);
     }
+
+
 }

@@ -5,16 +5,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.nexmovie.Adapter.ListMovieAdapter;
+import com.example.nexmovie.Adapter.ListSimilarMovieAdapter;
 import com.example.nexmovie.Adapter.ListTopRatedMovieAdapter;
 import com.example.nexmovie.Model.MovieModel;
 
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
     ArrayList<MovieModel> listDataTopRatedMovie;
     ArrayList<MovieModel> listDataNowPlayingMovie;
     private ListMovieAdapter listMovieAdapter;
+
     private ListTopRatedMovieAdapter listTopRatedMovieAdapter;
 
 
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myPopular.setId(jsonPopular.getInt("id"));
                                 myPopular.setPoster_path(jsonPopular.getString("poster_path"));
                                 myPopular.setRelease_date(jsonPopular.getString("release_date"));
+                                myPopular.setOverview(jsonPopular.getString("overview"));
                                 listDataPopularMovie.add(myPopular);
 
 
@@ -105,8 +113,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myTopRated.setTitle(jsonMovie.getString("title"));
                                 myTopRated.setId(jsonMovie.getInt("id"));
                                 myTopRated.setRelease_date(jsonMovie.getString("release_date"));
-//
-
+                                myTopRated.setOverview(jsonMovie.getString("overview"));
                                 listDataTopRatedMovie.add(myTopRated);
                             }
                             rvMovie =  (RecyclerView) findViewById(R.id.rvTopRated);
@@ -114,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
                             rvMovie.setHasFixedSize(true);
                             rvMovie.setLayoutManager(mLayoutManager);
-
                             rvMovie.setAdapter(listTopRatedMovieAdapter);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -153,7 +159,8 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myNowPlaying.setTitle(jsonNowPlaying.getString("title"));
                                 myNowPlaying.setId(jsonNowPlaying.getInt("id"));
                                 myNowPlaying.setRelease_date(jsonNowPlaying.getString("release_date"));
-//
+                                myNowPlaying.setOverview(jsonNowPlaying.getString("overview"));
+
 
                                 listDataNowPlayingMovie.add(myNowPlaying);
                             }
@@ -162,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
                             rvMovie.setHasFixedSize(true);
                             rvMovie.setLayoutManager(mLayoutManager);
-
                             rvMovie.setAdapter(listMovieAdapter);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -178,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,10 +198,6 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
         getPopularMovie();
         getTopRatedMovie();
         getNowPlayingMovie();
-//        for (int i = 0; i < listDataTopRatedMovie.size(); i++) {
-//            int movieId = listDataTopRatedMovie.get(i).getId();
-//            getDetail(movieId);
-//        }
     }
 
     @Override

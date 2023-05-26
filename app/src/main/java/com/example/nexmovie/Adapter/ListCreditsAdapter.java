@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,9 +36,12 @@ public class ListCreditsAdapter extends RecyclerView.Adapter<ListCreditsAdapter.
 
         public ImageView ivProfilePath;
 
+        public TextView tvName;
+
         public MyCredits(@NonNull View itemView) {
             super(itemView);
             ivProfilePath = itemView.findViewById(R.id.ivItemCredits);
+            tvName = itemView.findViewById(R.id.tvName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,6 +66,7 @@ public class ListCreditsAdapter extends RecyclerView.Adapter<ListCreditsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ListCreditsAdapter.MyCredits holder, int position) {
         final MovieModel movieModel = this.creditMovieList.get(position);
+        holder.tvName.setText(movieModel.getName());
         Glide.with(holder.itemView.getContext()).load("https://image.tmdb.org/t/p/w500" + movieModel.getProfile_path()).into(holder.ivProfilePath);
     }
 
