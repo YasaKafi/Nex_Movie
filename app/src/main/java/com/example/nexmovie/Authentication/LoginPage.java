@@ -3,6 +3,7 @@ package com.example.nexmovie.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,13 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.example.nexmovie.MainActivity;
+import com.example.nexmovie.NavigationBar;
 import com.example.nexmovie.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,9 +41,7 @@ public class LoginPage extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-
     EditText username, password;
-
     Button buttonLogin;
 
     @Override
@@ -51,18 +51,39 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         ImageView imageView = findViewById(R.id.ilustration);
         LinearLayout linearLayout = findViewById(R.id.linearLayoutLogin);
+        ProgressBar progressBar = findViewById(R.id.progesBar);
 
         imageView.bringToFront();
         linearLayout.requestLayout();
-
 
         username = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);
         buttonLogin = findViewById(R.id.btnLogin);
 
+        // Mendapatkan instance Shared Preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String savedEmail = sharedPreferences.getString("google_email", "");
+        String savedUsername = sharedPreferences.getString("username", "");
+        String savedPassword = sharedPreferences.getString("password", "");
+
+
+        // Jika email tersimpan di Shared Preferences, langsung navigasikan ke NavigationBar
+        if (!TextUtils.isEmpty(savedEmail)) {
+            Intent intent = new Intent(LoginPage.this, NavigationBar.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if (!TextUtils.isEmpty(savedUsername) && !TextUtils.isEmpty(savedPassword)) {
+            Intent intent = new Intent(LoginPage.this, NavigationBar.class);
+            startActivity(intent);
+            finish();
+        }
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
 
                 String usernameKu = username.getText().toString();
                 String passwordKu = password.getText().toString();
@@ -80,23 +101,31 @@ public class LoginPage extends AppCompatActivity {
                                     boolean status = response.getBoolean("status");
                                     String message = response.getString("message");
                                     if (status){
+                                        // Simpan usernameKu dan passwordKu ke Shared Preference
+                                        saveCredentialsToSharedPreferences(usernameKu, passwordKu);
 
                                         if (TextUtils.isEmpty(usernameKu) || TextUtils.isEmpty(usernameKu)) {
+                                            progressBar.setVisibility(View.GONE);
+
                                             // menampilkan Toast error
                                             Toast.makeText(getApplicationContext(), "Username atau password tidak boleh kosong", Toast.LENGTH_SHORT).show();
                                             return;
                                         }else{
+
                                             Toast.makeText(LoginPage.this, message, Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                                            Intent intent = new Intent(LoginPage.this, NavigationBar.class);
                                             startActivity(intent);
+                                            finish();
                                         }
 
 
                                     }else{
+                                        progressBar.setVisibility(View.GONE);
                                         Toast.makeText(LoginPage.this, "Login Gagal", Toast.LENGTH_LONG).show();
 //
                                     }
                                 } catch (JSONException e) {
+
                                     throw new RuntimeException(e);
                                 }
 
@@ -104,6 +133,7 @@ public class LoginPage extends AppCompatActivity {
 
                             @Override
                             public void onError(ANError error) {
+                                progressBar.setVisibility(View.GONE);
                                 // Handle error
                                 Toast.makeText(LoginPage.this, "Login gagal. Error: " + error.getErrorBody(), Toast.LENGTH_LONG).show();
                             }
@@ -125,10 +155,9 @@ public class LoginPage extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
-
         // Launch the Google Sign-In flow when the "Sign in with Google" button is clicked
         Button googleSignInButton = findViewById(R.id.btnGoogle);
-        googleSignInButton.setOnClickListener(v -> {
+        googleSignInButton.setOnClickListener(v-> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
         });
@@ -162,17 +191,26 @@ public class LoginPage extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+
+                        // Mengirim data akun Google ke MainActivity
                         updateUI(user);
-                    } else {
-                        // If sign in fails, display a message
+
                     }
                 });
 
     }
+
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            // User is signed in, save email to Shared Preferences
+            String email = user.getEmail();
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("google_email", email);
+            editor.apply();
+
             // User is signed in, launch the MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, NavigationBar.class);
             startActivity(intent);
             finish();
         } else {
@@ -181,4 +219,13 @@ public class LoginPage extends AppCompatActivity {
         }
     }
 
+    private void saveCredentialsToSharedPreferences(String username, String password) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.apply();
+    }
+
 }
+

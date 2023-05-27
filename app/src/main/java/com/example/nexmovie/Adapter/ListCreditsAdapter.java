@@ -21,9 +21,7 @@ import java.util.List;
 public class ListCreditsAdapter extends RecyclerView.Adapter<ListCreditsAdapter.MyCredits>{
 
     private Context context;
-
     private CreditsAdapterListener listener;
-
     private List<MovieModel> creditMovieList;
 
     public ListCreditsAdapter(Context context, ArrayList<MovieModel> creditMovieList, CreditsAdapterListener listener) {
@@ -35,7 +33,6 @@ public class ListCreditsAdapter extends RecyclerView.Adapter<ListCreditsAdapter.
     public class MyCredits extends RecyclerView.ViewHolder {
 
         public ImageView ivProfilePath;
-
         public TextView tvName;
 
         public MyCredits(@NonNull View itemView) {
@@ -58,7 +55,6 @@ public class ListCreditsAdapter extends RecyclerView.Adapter<ListCreditsAdapter.
     public ListCreditsAdapter.MyCredits onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_credits_movie, parent, false);
-
 
         return new MyCredits(itemView);
     }

@@ -10,10 +10,8 @@ import java.util.List;
 public class MovieModel implements Parcelable {
 
     private List<GenreModel> genres;
-
     private int id;
     private String title;
-
     private String overview;
     private String backdrop_path;
     private String budget;
@@ -77,7 +75,6 @@ public class MovieModel implements Parcelable {
     public List<GenreModel> getGenres() {
         return genres;
     }
-
 
     public String getOverview() {
         return overview;
