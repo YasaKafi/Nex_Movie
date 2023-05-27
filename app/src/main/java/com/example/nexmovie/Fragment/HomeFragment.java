@@ -1,48 +1,71 @@
-package com.example.nexmovie;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.nexmovie.Fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.nexmovie.Adapter.ListMovieAdapter;
-import com.example.nexmovie.Adapter.ListSimilarMovieAdapter;
 import com.example.nexmovie.Adapter.ListTopRatedMovieAdapter;
+import com.example.nexmovie.DetailPage;
 import com.example.nexmovie.Model.MovieModel;
-
+import com.example.nexmovie.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ListMovieAdapter.MovieAdapterListener, ListTopRatedMovieAdapter.TopRatedAdapterListener {
+public class HomeFragment extends Fragment implements ListMovieAdapter.MovieAdapterListener, ListTopRatedMovieAdapter.TopRatedAdapterListener {
 
-    RecyclerView rvMovie;
-    ArrayList<MovieModel> listDataPopularMovie;
-    ArrayList<MovieModel> listDataTopRatedMovie;
-    ArrayList<MovieModel> listDataNowPlayingMovie;
+    private RecyclerView rvPopular;
+    private RecyclerView rvTopRated;
+    private RecyclerView rvNowPlaying;
+    private ProgressBar progressBar;
+    private ArrayList<MovieModel> listDataPopularMovie;
+    private ArrayList<MovieModel> listDataTopRatedMovie;
+    private ArrayList<MovieModel> listDataNowPlayingMovie;
     private ListMovieAdapter listMovieAdapter;
-
     private ListTopRatedMovieAdapter listTopRatedMovieAdapter;
 
+    public HomeFragment() {
+        // Diperlukan konstruktor kosong untuk Fragment
+    }
 
-    public void getPopularMovie(){
-        ProgressBar progressBar = findViewById(R.id.tvproges);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        rvPopular = view.findViewById(R.id.rvPopular2);
+        rvTopRated = view.findViewById(R.id.rvTopRated2);
+        rvNowPlaying = view.findViewById(R.id.rvNowPlaying2);
+        progressBar = view.findViewById(R.id.tvProges);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listDataPopularMovie = new ArrayList<>();
+        listDataTopRatedMovie = new ArrayList<>();
+        listDataNowPlayingMovie = new ArrayList<>();
+
+        getPopularMovie();
+        getTopRatedMovie();
+        getNowPlayingMovie();
+    }
+
+    public void getPopularMovie() {
         String url = "https://api.themoviedb.org/3/movie/popular?api_key=3d304a8d6d6a05df31e454b80c9722ba&language=en-US&page=1";
         AndroidNetworking.get(url)
                 .setTag("test")
@@ -51,12 +74,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                        progressBar.setVisibility(View.GONE);
                         try {
                             JSONArray jsonArrayPopular = jsonObject.getJSONArray("results");
                             for (int i = 0; i < jsonArrayPopular.length(); i++) {
@@ -68,15 +86,11 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myPopular.setRelease_date(jsonPopular.getString("release_date"));
                                 myPopular.setOverview(jsonPopular.getString("overview"));
                                 listDataPopularMovie.add(myPopular);
-
-
                             }
-                            rvMovie =  (RecyclerView) findViewById(R.id.rvPopular);
-                            listMovieAdapter = new ListMovieAdapter(getApplicationContext(), listDataPopularMovie,MainActivity.this);
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
-                            rvMovie.setHasFixedSize(true);
-                            rvMovie.setLayoutManager(mLayoutManager);
-                            rvMovie.setAdapter(listMovieAdapter);
+                            listMovieAdapter = new ListMovieAdapter(requireContext(), listDataPopularMovie, HomeFragment.this);
+                            rvPopular.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+                            rvPopular.setHasFixedSize(true);
+                            rvPopular.setAdapter(listMovieAdapter);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -88,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                     }
                 });
     }
-    public void getTopRatedMovie(){
-        ProgressBar progressBar = findViewById(R.id.tvproges);
+
+    public void getTopRatedMovie() {
         String url = "https://api.themoviedb.org/3/movie/top_rated?api_key=3d304a8d6d6a05df31e454b80c9722ba&language=en-US&page=1";
         AndroidNetworking.get(url)
                 .setTag("test")
@@ -98,12 +112,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                        progressBar.setVisibility(View.GONE);
                         try {
                             JSONArray jsonArrayTopRated = jsonObject.getJSONArray("results");
                             for (int i = 0; i < jsonArrayTopRated.length(); i++) {
@@ -116,12 +125,10 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myTopRated.setOverview(jsonMovie.getString("overview"));
                                 listDataTopRatedMovie.add(myTopRated);
                             }
-                            rvMovie =  (RecyclerView) findViewById(R.id.rvTopRated);
-                            listTopRatedMovieAdapter = new ListTopRatedMovieAdapter(getApplicationContext(), listDataTopRatedMovie, MainActivity.this);
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
-                            rvMovie.setHasFixedSize(true);
-                            rvMovie.setLayoutManager(mLayoutManager);
-                            rvMovie.setAdapter(listTopRatedMovieAdapter);
+                            listTopRatedMovieAdapter = new ListTopRatedMovieAdapter(requireContext(), listDataTopRatedMovie, HomeFragment.this);
+                            rvTopRated.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+                            rvTopRated.setHasFixedSize(true);
+                            rvTopRated.setAdapter(listTopRatedMovieAdapter);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -134,8 +141,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                 });
     }
 
-    public void getNowPlayingMovie(){
-        ProgressBar progressBar = findViewById(R.id.tvproges);
+    public void getNowPlayingMovie() {
         String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=3d304a8d6d6a05df31e454b80c9722ba&language=en-US&page=1";
         AndroidNetworking.get(url)
                 .setTag("test")
@@ -144,12 +150,7 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                        progressBar.setVisibility(View.GONE);
                         try {
                             JSONArray jsonArrayNowPlaying = jsonObject.getJSONArray("results");
                             for (int i = 0; i < jsonArrayNowPlaying.length(); i++) {
@@ -160,16 +161,12 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                                 myNowPlaying.setId(jsonNowPlaying.getInt("id"));
                                 myNowPlaying.setRelease_date(jsonNowPlaying.getString("release_date"));
                                 myNowPlaying.setOverview(jsonNowPlaying.getString("overview"));
-
-
                                 listDataNowPlayingMovie.add(myNowPlaying);
                             }
-                            rvMovie =  (RecyclerView) findViewById(R.id.rvNowPlaying);
-                            listMovieAdapter = new ListMovieAdapter(getApplicationContext(), listDataNowPlayingMovie, MainActivity.this);
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
-                            rvMovie.setHasFixedSize(true);
-                            rvMovie.setLayoutManager(mLayoutManager);
-                            rvMovie.setAdapter(listMovieAdapter);
+                            listMovieAdapter = new ListMovieAdapter(requireContext(), listDataNowPlayingMovie, HomeFragment.this);
+                            rvNowPlaying.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+                            rvNowPlaying.setHasFixedSize(true);
+                            rvNowPlaying.setAdapter(listMovieAdapter);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -182,27 +179,9 @@ public class MainActivity extends AppCompatActivity implements ListMovieAdapter.
                 });
     }
 
-
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        listDataPopularMovie = new ArrayList<>();
-        listDataTopRatedMovie = new ArrayList<>();
-        listDataNowPlayingMovie = new ArrayList<>();
-        setContentView(R.layout.activity_main);
-
-        getPopularMovie();
-        getTopRatedMovie();
-        getNowPlayingMovie();
-    }
-
     @Override
     public void onContactSelected(MovieModel myMovie) {
-        Intent intent = new Intent(MainActivity.this, DetailPage.class);
+        Intent intent = new Intent(requireContext(), DetailPage.class);
         intent.putExtra("myMovie", myMovie);
         startActivity(intent);
     }

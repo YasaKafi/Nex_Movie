@@ -1,10 +1,7 @@
 package com.example.nexmovie.Adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,14 +11,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nexmovie.DetailPage;
-import com.example.nexmovie.MainActivity;
 import com.example.nexmovie.Model.MovieModel;
 import com.example.nexmovie.R;
 
